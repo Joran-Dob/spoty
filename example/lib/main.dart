@@ -76,7 +76,9 @@ class _MyHomePageState extends State<MyHomePage> {
         // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: const Spoty(
+      body: Spoty(
+        configString:
+            '{"points":[{"x":"162.2578125","y":"242.83203125"},{"x":"85.86328125","y":"426.23828125"},{"x":"40.515625","y":"437.3125"},{"x":"456.921875","y":"298.0078125"}]}',
         originalImageProvider: NetworkImage(
           'https://i.postimg.cc/FKDbbNg4/Lazy-Ambolli-in-the-Dark-Woods-original.jpg',
         ),

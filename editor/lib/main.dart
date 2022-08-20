@@ -53,7 +53,7 @@ class _MyHomePageState extends State<MyHomePage> {
             );
           },
         ),
-        child: const EditorView(),
+        child: const EditorPage(),
       ),
     );
   }

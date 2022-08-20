@@ -2,23 +2,18 @@ import 'package:flutter/material.dart';
 import 'package:flutter/src/foundation/key.dart';
 import 'package:flutter/src/widgets/framework.dart';
 
-class SpotyImageViewer extends StatefulWidget {
+class SpotyImageViewer extends StatelessWidget {
   SpotyImageViewer({
     Key? key,
     this.onTap,
     required this.imageProvider,
+    required this.points,
   }) : super(key: key);
 
   final Function(Offset offset)? onTap;
   final ImageProvider imageProvider;
-
-  @override
-  State<SpotyImageViewer> createState() => _SpotyImageViewerState();
-}
-
-class _SpotyImageViewerState extends State<SpotyImageViewer> {
+  final List<Offset> points;
   final GlobalKey _key = GlobalKey();
-  final List<Offset> _points = [];
 
   @override
   Widget build(BuildContext context) {
@@ -29,11 +24,11 @@ class _SpotyImageViewerState extends State<SpotyImageViewer> {
         children: [
           Positioned(
             child: Image(
-              image: widget.imageProvider,
+              image: imageProvider,
               fit: BoxFit.contain,
             ),
           ),
-          ..._points
+          ...points
               .map(
                 (e) => _Point(
                   offset: e,
@@ -49,10 +44,7 @@ class _SpotyImageViewerState extends State<SpotyImageViewer> {
     final box = _key.currentContext?.findRenderObject() as RenderBox?;
     final localPosition = box?.globalToLocal(details.globalPosition);
     final position = localPosition ?? details.globalPosition;
-    setState(() {
-      _points.add(position);
-    });
-    widget.onTap?.call(position);
+    onTap?.call(position);
   }
 }
 
