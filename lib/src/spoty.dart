@@ -31,6 +31,8 @@ class Spoty extends StatelessWidget {
         configFile: configFile,
         configString: configString,
         onAllDifferencesFound: onAllDifferencesFound,
+        originalImageProvider: originalImageProvider,
+        differenceImageProvider: differenceImageProvider,
       ),
       child: const _Spoty(),
     );
@@ -50,7 +52,7 @@ class _SpotyState extends State<_Spoty> {
 
   @override
   Widget build(BuildContext context) {
-    final spotyConfig = BlocProvider.of<SpotyCubit>(context);
+    final spotyCubit = BlocProvider.of<SpotyCubit>(context);
 
     return BlocBuilder<SpotyCubit, SpotyState>(
       builder: (context, state) {
@@ -66,11 +68,9 @@ class _SpotyState extends State<_Spoty> {
                         children: [
                           SpotyImageViewer(
                             key: _originalImageKey,
-                            imageProvider: const NetworkImage(
-                              'https://i.postimg.cc/j52HZmZJ/Lazy-Ambolli-in-the-Dark-Woodsdiff.jpg',
-                            ),
+                            imageProvider: spotyCubit.originalImageProvider,
                             points: correctPoints,
-                            onTap: (offset) => spotyConfig.onPointSelected(
+                            onTap: (offset) => spotyCubit.onPointSelected(
                               offset: offset,
                               width: _originalImageKey.currentContext?.size?.width ?? 0.0,
                               height: _originalImageKey.currentContext?.size?.height ?? 0.0,
@@ -85,11 +85,9 @@ class _SpotyState extends State<_Spoty> {
                         children: [
                           SpotyImageViewer(
                             key: _differenceImageKey,
-                            imageProvider: const NetworkImage(
-                              'https://i.postimg.cc/j52HZmZJ/Lazy-Ambolli-in-the-Dark-Woodsdiff.jpg',
-                            ),
+                            imageProvider: spotyCubit.differenceImageProvider,
                             points: correctPoints,
-                            onTap: (offset) => spotyConfig.onPointSelected(
+                            onTap: (offset) => spotyCubit.onPointSelected(
                               offset: offset,
                               width: _differenceImageKey.currentContext?.size?.width ?? 0.0,
                               height: _differenceImageKey.currentContext?.size?.height ?? 0.0,

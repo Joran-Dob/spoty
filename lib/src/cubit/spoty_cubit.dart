@@ -17,6 +17,8 @@ class SpotyCubit extends Cubit<SpotyState> {
     this.configFile,
     this.configString,
     this.onAllDifferencesFound,
+    required this.originalImageProvider,
+    required this.differenceImageProvider,
   }) : super(const SpotyState.initial()) {
     _init();
   }
@@ -27,6 +29,8 @@ class SpotyCubit extends Cubit<SpotyState> {
   SpotyImageConfig? imageConfig;
   List<SpotyImageConfigPosition> points = [];
   List<Offset> correctPoints = [];
+  final ImageProvider originalImageProvider;
+  final ImageProvider differenceImageProvider;
 
   Future<void> _init() async {
     emit(const SpotyState.initial());
