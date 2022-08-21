@@ -1,4 +1,3 @@
-import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:spoty/src/data/entities/spoty_image_config_position.dart';
 

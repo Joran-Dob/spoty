@@ -5,24 +5,25 @@ import 'dart:io';
 import 'package:bloc/bloc.dart';
 import 'package:flutter/material.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
-import 'package:meta/meta.dart';
 import 'package:spoty/spoty.dart';
 
 part 'spoty_state.dart';
 part 'spoty_cubit.freezed.dart';
 
-const _safeTapRange = 100.0;
+const _safeTapRange = 20.0;
 
 class SpotyCubit extends Cubit<SpotyState> {
   SpotyCubit({
     this.configFile,
     this.configString,
-  }) : super(SpotyState.initial()) {
+    this.onAllDifferencesFound,
+  }) : super(const SpotyState.initial()) {
     _init();
   }
 
   final File? configFile;
   final String? configString;
+  final VoidCallback? onAllDifferencesFound;
   SpotyImageConfig? imageConfig;
   List<SpotyImageConfigPosition> points = [];
   List<Offset> correctPoints = [];
@@ -39,7 +40,7 @@ class SpotyCubit extends Cubit<SpotyState> {
       imageConfig = SpotyImageConfig.fromJson(data);
     }
     if (imageConfig != null) {
-      points = imageConfig?.points ?? [];
+      points = imageConfig?.points.toList() ?? [];
       emit(
         SpotyState.loaded(
           imageConfig: imageConfig!,
@@ -51,27 +52,32 @@ class SpotyCubit extends Cubit<SpotyState> {
     }
   }
 
-  FutureOr<void> onPointSelected({required Offset offset, required double width, required double height,}) {
+  FutureOr<void> onPointSelected({
+    required Offset offset,
+    required double width,
+    required double height,
+  }) {
     emit(const SpotyState.loading());
     try {
-      Offset? removePoint;
+      int? removePointIndex;
       for (final point in points) {
-        final configPointX = point.xPercentage * ;
-        final configPointY = point.yPercentage;
+        final configPointX = double.parse(point.xPercentage) * width;
+        final configPointY = double.parse(point.yPercentage) * height;
         final xPositionCorrect = (configPointX - _safeTapRange) < offset.dx &&
             (configPointX + _safeTapRange) > offset.dx;
         final yPositionCorrect = (configPointY - _safeTapRange) < offset.dy &&
             (configPointY + _safeTapRange) > offset.dy;
         if (xPositionCorrect && yPositionCorrect) {
-          correctPoints.add(point);
-          removePoint = point;
+          correctPoints.add(Offset(configPointX, configPointY));
+          removePointIndex = points.indexOf(point);
         }
       }
-      if (removePoint != null) {
-        points.remove(removePoint);
+      if (removePointIndex != null) {
+        points.removeAt(removePointIndex);
       }
-
-      checkIfCompleted();
+      if (onAllDifferencesFound != null) {
+        checkIfCompleted();
+      }
       emit(
         SpotyState.loaded(
           imageConfig: imageConfig!,
@@ -90,7 +96,7 @@ class SpotyCubit extends Cubit<SpotyState> {
 
   void checkIfCompleted() {
     if (points.isEmpty) {
-      print('Found all diffs');
+      onAllDifferencesFound?.call();
     }
   }
 }

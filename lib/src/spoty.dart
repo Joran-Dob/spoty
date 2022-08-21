@@ -1,26 +1,28 @@
 import 'dart:io';
 
 import 'package:flutter/material.dart';
-import 'package:flutter/src/foundation/key.dart';
-import 'package:flutter/src/widgets/framework.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 import 'package:spoty/src/cubit/spoty_cubit.dart';
 import 'package:spoty/src/spoty_image_viewer.dart';
 
 class Spoty extends StatelessWidget {
   const Spoty({
-    Key? key,
+    super.key,
     required this.differenceImageProvider,
     required this.originalImageProvider,
     this.configFile,
     this.configString,
-  })  : assert(configFile != null || configString != null, "Config must be provided"),
-        super(key: key);
+    this.onAllDifferencesFound,
+  }) : assert(
+          configFile != null || configString != null,
+          'Config must be provided',
+        );
 
   final ImageProvider originalImageProvider;
   final ImageProvider differenceImageProvider;
   final File? configFile;
   final String? configString;
+  final VoidCallback? onAllDifferencesFound;
 
   @override
   Widget build(BuildContext context) {
@@ -28,14 +30,15 @@ class Spoty extends StatelessWidget {
       create: (context) => SpotyCubit(
         configFile: configFile,
         configString: configString,
+        onAllDifferencesFound: onAllDifferencesFound,
       ),
-      child: _Spoty(),
+      child: const _Spoty(),
     );
   }
 }
 
 class _Spoty extends StatefulWidget {
-  const _Spoty({Key? key}) : super(key: key);
+  const _Spoty();
 
   @override
   State<_Spoty> createState() => _SpotyState();
@@ -52,43 +55,44 @@ class _SpotyState extends State<_Spoty> {
     return BlocBuilder<SpotyCubit, SpotyState>(
       builder: (context, state) {
         return state.maybeWhen(
-            loaded: (imageConfig, correctPoints) => Row(
+          loaded: (imageConfig, correctPoints) => Row(
+            children: [
+              Expanded(
+                child: Column(
                   children: [
                     Expanded(
                       child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
                         children: [
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SpotyImageViewer(
-                                  key: _originalImageKey,
-                                  imageProvider: const NetworkImage(
-                                    'https://i.postimg.cc/j52HZmZJ/Lazy-Ambolli-in-the-Dark-Woodsdiff.jpg',
-                                  ),
-                                  points: correctPoints,
-                                  onTap: (offset) => spotyConfig.onPointSelected(
-                                    offset: offset,
-                                  ),
-                                ),
-                              ],
+                          SpotyImageViewer(
+                            key: _originalImageKey,
+                            imageProvider: const NetworkImage(
+                              'https://i.postimg.cc/j52HZmZJ/Lazy-Ambolli-in-the-Dark-Woodsdiff.jpg',
+                            ),
+                            points: correctPoints,
+                            onTap: (offset) => spotyConfig.onPointSelected(
+                              offset: offset,
+                              width: _originalImageKey.currentContext?.size?.width ?? 0.0,
+                              height: _originalImageKey.currentContext?.size?.height ?? 0.0,
                             ),
                           ),
-                          Expanded(
-                            child: Column(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                SpotyImageViewer(
-                                  key: _differenceImageKey,
-                                  imageProvider: const NetworkImage(
-                                    'https://i.postimg.cc/j52HZmZJ/Lazy-Ambolli-in-the-Dark-Woodsdiff.jpg',
-                                  ),
-                                  points: correctPoints,
-                                  onTap: (offset) => spotyConfig.onPointSelected(
-                                    offset: offset,
-                                  ),
-                                ),
-                              ],
+                        ],
+                      ),
+                    ),
+                    Expanded(
+                      child: Column(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          SpotyImageViewer(
+                            key: _differenceImageKey,
+                            imageProvider: const NetworkImage(
+                              'https://i.postimg.cc/j52HZmZJ/Lazy-Ambolli-in-the-Dark-Woodsdiff.jpg',
+                            ),
+                            points: correctPoints,
+                            onTap: (offset) => spotyConfig.onPointSelected(
+                              offset: offset,
+                              width: _differenceImageKey.currentContext?.size?.width ?? 0.0,
+                              height: _differenceImageKey.currentContext?.size?.height ?? 0.0,
                             ),
                           ),
                         ],
@@ -96,16 +100,12 @@ class _SpotyState extends State<_Spoty> {
                     ),
                   ],
                 ),
-            orElse: SizedBox.new);
+              ),
+            ],
+          ),
+          orElse: SizedBox.new,
+        );
       },
     );
-  }
-
-  void _onTapDown(TapDownDetails details) {
-    final x = details.globalPosition.dx;
-    final y = details.globalPosition.dy;
-    // or user the local position method to get the offset
-    print(details.localPosition);
-    print('tap down $x, $y');
   }
 }

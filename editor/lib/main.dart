@@ -1,8 +1,6 @@
 import 'package:editor/editor/editor.dart';
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:macos_ui/macos_ui.dart';
-import 'package:spoty/spoty.dart';
 
 void main() {
   runApp(const MyApp());

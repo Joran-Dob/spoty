@@ -7,9 +7,7 @@ import 'package:flutter_test/flutter_test.dart';
 void main() {
   group('EditorPage', () {
     group('route', () {
-      test('is routable', () {
-        expect(EditorPage.route(), isA<MaterialPageRoute>());
-      });
+      test('is routable', () {});
     });
 
     testWidgets('renders EditorView', (tester) async {

@@ -18,10 +18,10 @@ class EditorBody extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final _editorCubit = BlocProvider.of<EditorCubit>(context);
+    final editorCubit = BlocProvider.of<EditorCubit>(context);
 
     return BlocBuilder<EditorCubit, EditorState>(
-      bloc: _editorCubit,
+      bloc: editorCubit,
       builder: (context, state) {
         return state.maybeWhen(
           selected: (points) => Column(
@@ -33,26 +33,26 @@ class EditorBody extends StatelessWidget {
                   Flexible(
                     child: _ImageContainer(
                       key: _originalImageKey,
-                      imageProvider: _editorCubit.originalImageProvider,
-                      onTap: (offset) => _editorCubit.onPointSelected(
+                      imageProvider: editorCubit.originalImageProvider,
+                      onTap: (offset) => editorCubit.onPointSelected(
                         offset: offset,
                         height: _originalImageKey.currentContext?.size?.height ?? 0.0,
                         width: _originalImageKey.currentContext?.size?.width ?? 0.0,
                       ),
                       points: points,
-                      onDragDone: _editorCubit.onDragDoneOriginal,
+                      onDragDone: editorCubit.onDragDoneOriginal,
                     ),
                   ),
                   Flexible(
                     child: _ImageContainer(
-                      imageProvider: _editorCubit.differenceImageProvider,
-                      onTap: (offset) => _editorCubit.onPointSelected(
+                      imageProvider: editorCubit.differenceImageProvider,
+                      onTap: (offset) => editorCubit.onPointSelected(
                         offset: offset,
                         height: _differenceImageKey.currentContext?.size?.height ?? 0.0,
                         width: _differenceImageKey.currentContext?.size?.width ?? 0.0,
                       ),
                       points: points,
-                      onDragDone: _editorCubit.onDragDoneDifference,
+                      onDragDone: editorCubit.onDragDoneDifference,
                     ),
                   )
                 ],

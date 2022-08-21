@@ -10,7 +10,6 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:freezed_annotation/freezed_annotation.dart';
 import 'package:file_picker/file_picker.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:spoty/spoty.dart';
 
 part 'editor_state.dart';

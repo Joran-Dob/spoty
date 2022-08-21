@@ -49,36 +49,15 @@ class MyHomePage extends StatefulWidget {
 }
 
 class _MyHomePageState extends State<MyHomePage> {
-  int _counter = 0;
-
-  void _incrementCounter() {
-    setState(() {
-      // This call to setState tells the Flutter framework that something has
-      // changed in this State, which causes it to rerun the build method below
-      // so that the display can reflect the updated values. If we changed
-      // _counter without calling setState(), then the build method would not be
-      // called again, and so nothing would appear to happen.
-      _counter++;
-    });
-  }
-
   @override
   Widget build(BuildContext context) {
-    // This method is rerun every time setState is called, for instance as done
-    // by the _incrementCounter method above.
-    //
-    // The Flutter framework has been optimized to make rerunning build methods
-    // fast, so that you can just rebuild anything that needs updating rather
-    // than having to individually change instances of widgets.
     return Scaffold(
       appBar: AppBar(
-        // Here we take the value from the MyHomePage object that was created by
-        // the App.build method, and use it to set our appbar title.
         title: Text(widget.title),
       ),
-      body: Spoty(
+      body: const Spoty(
         configString:
-            '{"points":[{"x":"162.2578125","y":"242.83203125"},{"x":"85.86328125","y":"426.23828125"},{"x":"40.515625","y":"437.3125"},{"x":"456.921875","y":"298.0078125"}]}',
+            '{"points":[{"xPercentage":"0.2700957745016611","yPercentage":"0.5359011225055432"},{"xPercentage":"0.34055102782392027","yPercentage":"0.6404344512195121"},{"xPercentage":"0.13518739617940198","yPercentage":"0.9391369872505543"},{"xPercentage":"0.06466725498338871","yPercentage":"0.9764152577605322"},{"xPercentage":"0.7582861814784053","yPercentage":"0.6544397865853658"}]}',
         originalImageProvider: NetworkImage(
           'https://i.postimg.cc/FKDbbNg4/Lazy-Ambolli-in-the-Dark-Woods-original.jpg',
         ),

@@ -1,5 +1,4 @@
 import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:editor/editor/cubit/cubit.dart';
 import 'package:editor/editor/widgets/editor_body.dart';
 import 'package:macos_ui/macos_ui.dart';
