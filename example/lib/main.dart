@@ -55,7 +55,7 @@ class _MyHomePageState extends State<MyHomePage> {
       appBar: AppBar(
         title: Text(widget.title),
       ),
-      body: const Spoty(
+      body: Spoty(
         configString:
             '{"points":[{"xPercentage":"0.2700957745016611","yPercentage":"0.5359011225055432"},{"xPercentage":"0.34055102782392027","yPercentage":"0.6404344512195121"},{"xPercentage":"0.13518739617940198","yPercentage":"0.9391369872505543"},{"xPercentage":"0.06466725498338871","yPercentage":"0.9764152577605322"},{"xPercentage":"0.7582861814784053","yPercentage":"0.6544397865853658"}]}',
         originalImageProvider: NetworkImage(
@@ -64,6 +64,7 @@ class _MyHomePageState extends State<MyHomePage> {
         differenceImageProvider: NetworkImage(
           'https://i.postimg.cc/j52HZmZJ/Lazy-Ambolli-in-the-Dark-Woodsdiff.jpg',
         ),
+        differencesTextBuilder: (differences, total) => 'Found $differences of $total differences',
       ),
     );
   }
